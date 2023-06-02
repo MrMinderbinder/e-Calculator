@@ -39,10 +39,9 @@ def get_output():
 
     return output_selection
 
-def taylor(no_digits):
-    digits = 10 ** (int(no_digits) + 10)
+def taylor(digits):
+    term = 10 ** (int(digits) + 10)
     k = 2
-    term = digits
     e = k * term
 
     while term:
