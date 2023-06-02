@@ -39,7 +39,7 @@ def get_output():
 
     return output_selection
 
-def taylor():
+def taylor(no_digits):
     digits = 10 ** (int(no_digits) + 10)
     k = 2
     term = digits
@@ -52,7 +52,7 @@ def taylor():
 
     return e
 
-def taylor_compressed():
+def taylor_compressed(no_digits):
     digits = 10 ** (int(no_digits) + 35)
     e = 163 * digits // 60
     k = 0
@@ -77,7 +77,7 @@ def get_estimate(order):
 
     return estimate
 
-def binary_splitting():
+def binary_splitting(no_digits):
     order = 10 ** int(no_digits)
     terms = get_estimate(order)
     factorial = math.factorial(terms)
@@ -91,12 +91,15 @@ def binary_splitting():
 
     return e
 
-def output(e):
-    if algorithm == "1" or algorithm == "2":
-        e = str(e)
+def output(e, algorithm, output_method, no_digits):
+    e = str(e)
+
+    if algorithm == "1":
         e = e[0] + "." + e[1:-11]
+    elif algorithm == "2":
+        e = e[0] + "." + e[1:-36]
     else:
-        e = "2." + str(e)[:-6]
+        e = "2." + e[:-6]
 
     if output_method == "1":
         print(e)
@@ -105,7 +108,7 @@ def output(e):
         with open(filename, "w") as file:
             file.write(e)
 
-if __name__ == "__main__":
+def main():
     no_digits = get_digits()
     algorithm = get_algorithm()
     output_method = get_output()
@@ -113,16 +116,19 @@ if __name__ == "__main__":
     start = time.time()
 
     if algorithm == "1":
-        e = taylor()
+        e = taylor(no_digits)
     elif algorithm == "2":
-        e = taylor_compressed()
+        e = taylor_compressed(no_digits)
     else:
-        e = binary_splitting()
+        e = binary_splitting(no_digits)
 
     finish = time.time()
 
-    output(e)
+    output(e, algorithm, output_method, no_digits)
 
     end = time.time()
     print("Computation time: ", finish - start, "s", sep = "")
     print("Wall to wall time: ", end - start, "s", sep = "")
+
+if __name__ == "__main__":
+    main()
